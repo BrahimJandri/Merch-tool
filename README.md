@@ -1,4 +1,5 @@
 <h1>merch-tool/</h1>
+<li>
 ├── backend/
 │   ├── app/
 │   │   ├── main.py                 # FastAPI entry point
@@ -63,3 +64,4 @@
 │       └── cron.yaml
 │
 └── README.md
+</li>
