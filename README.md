@@ -1,4 +1,4 @@
-merch-tool/
+<h1>merch-tool/</h1>
 ├── backend/
 │   ├── app/
 │   │   ├── main.py                 # FastAPI entry point
