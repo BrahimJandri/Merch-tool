@@ -127,7 +127,13 @@ export const authAPI = {
     return fetch(`${API_BASE_URL}/auth/token`, {
       method: 'POST',
       body: formData,
-    }).then(res => res.json())
+    }).then(async res => {
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.detail || 'Login failed')
+      }
+      return res.json()
+    })
   },
 
   getCurrentUser: (token: string) => {
