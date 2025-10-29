@@ -1,0 +1,28 @@
+- description: "Scrape trending products"
+  url: /api/cron/scrape-trends
+  schedule: every 6 hours
+  retry_parameters:
+    min_backoff_seconds: 10
+    max_backoff_seconds: 300
+    max_doublings: 5
+
+- description: "Update keyword data"
+  url: /api/cron/update-keywords
+  schedule: every 12 hours
+  retry_parameters:
+    min_backoff_seconds: 10
+    max_backoff_seconds: 300
+    max_doublings: 5
+
+- description: "Refresh trend analysis"
+  url: /api/cron/refresh-trends
+  schedule: every 1 hours
+  retry_parameters:
+    min_backoff_seconds: 10
+    max_backoff_seconds: 300
+    max_doublings: 3
+
+- description: "Clean old data"
+  url: /api/cron/cleanup
+  schedule: every day 00:00
+  timezone: UTC
