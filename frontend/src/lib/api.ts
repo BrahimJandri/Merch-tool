@@ -34,7 +34,17 @@ async function fetchAPI(endpoint: string, options: RequestInit = {}) {
     })
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`)
+      // Try to get detailed error message from backend
+      let errorMessage = `API error: ${response.statusText}`
+      try {
+        const errorData = await response.json()
+        if (errorData.detail) {
+          errorMessage = errorData.detail
+        }
+      } catch (e) {
+        // If we can't parse JSON, use status text
+      }
+      throw new Error(errorMessage)
     }
 
     return await response.json()

@@ -4,9 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { authAPI } from '@/lib/api'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function SignUp() {
   const router = useRouter()
+  const { signIn } = useAuth()
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -42,8 +44,14 @@ export default function SignUp() {
     setLoading(true)
 
     try {
+      // Register the user
       await authAPI.register(formData.username, formData.email, formData.password)
-      router.push('/auth/signin?registered=true')
+      
+      // Automatically sign in after successful registration
+      await signIn(formData.username, formData.password)
+      
+      // Redirect to dashboard
+      router.push('/dashboard')
     } catch (err: any) {
       setError(err.message || 'Failed to create account. Please try again.')
     } finally {

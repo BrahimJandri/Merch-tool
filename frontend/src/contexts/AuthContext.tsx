@@ -6,6 +6,7 @@ import { auth } from '@/lib/auth'
 import { authAPI } from '@/lib/api'
 
 interface User {
+  id: number
   username: string
   email: string
 }
@@ -44,11 +45,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signIn = async (username: string, password: string) => {
-    const response = await authAPI.login(username, password)
-    if (response.access_token) {
-      auth.setToken(response.access_token)
-      const userData = await authAPI.getCurrentUser(response.access_token)
-      setUser(userData)
+    try {
+      const response = await authAPI.login(username, password)
+      if (response.access_token) {
+        auth.setToken(response.access_token)
+        const userData = await authAPI.getCurrentUser(response.access_token)
+        setUser(userData)
+      }
+    } catch (error) {
+      console.error('Sign in error:', error)
+      throw error
     }
   }
 

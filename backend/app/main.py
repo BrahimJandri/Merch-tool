@@ -4,6 +4,11 @@ FastAPI entry point for Merch-tool application
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import products, keywords, trademarks, auth
+from app.database import engine
+from app.models import Base
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Merch-tool API", version="1.0.0")
 

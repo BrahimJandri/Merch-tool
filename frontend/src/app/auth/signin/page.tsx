@@ -3,11 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { authAPI } from '@/lib/api'
-import { auth } from '@/lib/auth'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function SignIn() {
   const router = useRouter()
+  const { signIn } = useAuth()
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -29,14 +29,8 @@ export default function SignIn() {
     setLoading(true)
 
     try {
-      const response = await authAPI.login(formData.username, formData.password)
-      
-      if (response.access_token) {
-        auth.setToken(response.access_token)
-        router.push('/dashboard')
-      } else {
-        setError('Invalid credentials')
-      }
+      await signIn(formData.username, formData.password)
+      router.push('/dashboard')
     } catch (err: any) {
       setError(err.message || 'Failed to sign in. Please try again.')
     } finally {
